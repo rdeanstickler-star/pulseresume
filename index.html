@@ -11,6 +11,17 @@
     />
     <meta name="theme-color" content="#0f172a" />
     <title>PulseResume — Privacy-first resume builder</title>
+    <!--
+      Google Fonts CDN — the ONE allowed network call (documented in privacy
+      section of README). Preconnects keep TTFB minimal; the css?family= URL
+      pulls just the families the customization panel exposes.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lato:wght@400;700&family=Roboto:wght@400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Serif+Pro:wght@400;700&family=Playfair+Display:wght@400;700&family=EB+Garamond:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

@@ -2,10 +2,12 @@ import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsHtml } from '../_shared/sections-html';
 import { bodyFont } from '../_shared/types';
-import { creativeTokens as T } from './tokens';
+import { applyTheme } from '../_shared/themed-tokens';
+import { creativeTokens } from './tokens';
 
 /** Creative — full-width color-block hero header followed by single column. */
 export function CreativeHtmlTemplate({ resume }: { resume: Resume }) {
+  const T = applyTheme(creativeTokens, resume.meta.theme);
   const { basics, sections } = resume;
   const contact = [
     basics.email,

@@ -2,59 +2,64 @@ import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsPdf } from '../_shared/sections-pdf';
-import { bodyFont } from '../_shared/types';
+import { bodyFont, type TokenSet } from '../_shared/types';
+import { applyTheme } from '../_shared/themed-tokens';
 import { registerPdfFonts } from '@/lib/pdf-fonts';
-import { executiveTokens as T } from './tokens';
+import { executiveTokens } from './tokens';
 
 registerPdfFonts();
 
-const styles = StyleSheet.create({
-  page: {
-    fontFamily: bodyFont(T),
-    fontSize: T.type.bodySize,
-    lineHeight: T.type.lineHeight,
-    color: T.colors.text,
-    backgroundColor: T.colors.background,
-    paddingTop: T.page.paddingTopPt,
-    paddingBottom: T.page.paddingBottomPt,
-    paddingLeft: T.page.paddingLeftPt,
-    paddingRight: T.page.paddingRightPt,
-  },
-  header: { marginBottom: T.spacing.headerToBodyGap, alignItems: 'center' },
-  name: { fontSize: T.type.nameSize, fontWeight: 700 },
-  headline: {
-    fontSize: T.type.headlineSize,
-    color: T.colors.muted,
-    fontStyle: 'italic',
-    marginTop: 4,
-  },
-  contact: { fontSize: T.type.smallSize, color: T.colors.muted, marginTop: 8 },
-  divider: {
-    marginTop: 12,
-    width: '40%',
-    borderBottomWidth: 1,
-    borderBottomColor: T.colors.rule,
-    alignSelf: 'center',
-  },
-  summary: { fontSize: T.type.bodySize, marginTop: 12, textAlign: 'left' },
-  section: { marginTop: T.spacing.sectionGap },
-  sectionHeading: {
-    fontSize: T.type.sectionHeadingSize,
-    fontWeight: 700,
-    textTransform: 'uppercase',
-    letterSpacing: T.sectionHeading.letterSpacing,
-    color: T.colors.text,
-    textAlign: 'center',
-    borderTopWidth: 1,
-    borderTopColor: T.colors.rule,
-    borderBottomWidth: 1,
-    borderBottomColor: T.colors.rule,
-    paddingVertical: 4,
-    marginBottom: 8,
-  },
-});
+function makeStyles(T: TokenSet) {
+  return StyleSheet.create({
+    page: {
+      fontFamily: bodyFont(T),
+      fontSize: T.type.bodySize,
+      lineHeight: T.type.lineHeight,
+      color: T.colors.text,
+      backgroundColor: T.colors.background,
+      paddingTop: T.page.paddingTopPt,
+      paddingBottom: T.page.paddingBottomPt,
+      paddingLeft: T.page.paddingLeftPt,
+      paddingRight: T.page.paddingRightPt,
+    },
+    header: { marginBottom: T.spacing.headerToBodyGap, alignItems: 'center' },
+    name: { fontSize: T.type.nameSize, fontWeight: 700 },
+    headline: {
+      fontSize: T.type.headlineSize,
+      color: T.colors.muted,
+      fontStyle: 'italic',
+      marginTop: 4,
+    },
+    contact: { fontSize: T.type.smallSize, color: T.colors.muted, marginTop: 8 },
+    divider: {
+      marginTop: 12,
+      width: '40%',
+      borderBottomWidth: 1,
+      borderBottomColor: T.colors.rule,
+      alignSelf: 'center',
+    },
+    summary: { fontSize: T.type.bodySize, marginTop: 12, textAlign: 'left' },
+    section: { marginTop: T.spacing.sectionGap },
+    sectionHeading: {
+      fontSize: T.type.sectionHeadingSize,
+      fontWeight: 700,
+      textTransform: 'uppercase',
+      letterSpacing: T.sectionHeading.letterSpacing,
+      color: T.colors.text,
+      textAlign: 'center',
+      borderTopWidth: 1,
+      borderTopColor: T.colors.rule,
+      borderBottomWidth: 1,
+      borderBottomColor: T.colors.rule,
+      paddingVertical: 4,
+      marginBottom: 8,
+    },
+  });
+}
 
 export function ExecutivePdfDocument({ resume }: { resume: Resume }) {
+  const T = applyTheme(executiveTokens, resume.meta.theme);
+  const styles = makeStyles(T);
   const size = resume.meta.pageSize === 'letter' ? 'LETTER' : 'A4';
   const { basics, sections } = resume;
   const contact = [

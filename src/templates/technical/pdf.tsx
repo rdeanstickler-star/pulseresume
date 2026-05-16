@@ -2,51 +2,52 @@ import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsPdf } from '../_shared/sections-pdf';
-import { bodyFont, headingFont } from '../_shared/types';
+import { bodyFont, headingFont, type TokenSet } from '../_shared/types';
+import { applyTheme } from '../_shared/themed-tokens';
 import { registerPdfFonts } from '@/lib/pdf-fonts';
-import { technicalTokens as T } from './tokens';
+import { technicalTokens } from './tokens';
 
 registerPdfFonts();
 
-const styles = StyleSheet.create({
-  page: {
-    fontFamily: bodyFont(T),
-    fontSize: T.type.bodySize,
-    lineHeight: T.type.lineHeight,
-    color: T.colors.text,
-    backgroundColor: T.colors.background,
-    paddingTop: T.page.paddingTopPt,
-    paddingBottom: T.page.paddingBottomPt,
-    paddingLeft: T.page.paddingLeftPt,
-    paddingRight: T.page.paddingRightPt,
-  },
-  header: { marginBottom: T.spacing.headerToBodyGap },
-  name: {
-    fontFamily: headingFont(T),
-    fontSize: T.type.nameSize,
-    fontWeight: 700,
-  },
-  headline: {
-    fontFamily: headingFont(T),
-    fontSize: T.type.headlineSize,
-    color: T.colors.accent,
-    marginTop: 2,
-  },
-  contact: { fontSize: T.type.smallSize, color: T.colors.muted, marginTop: 6 },
-  summary: { fontSize: T.type.bodySize, marginTop: 8 },
-  section: { marginTop: T.spacing.sectionGap },
-  sectionHeading: {
-    fontFamily: headingFont(T),
-    fontSize: T.type.sectionHeadingSize,
-    fontWeight: 700,
-    textTransform: 'uppercase',
-    letterSpacing: T.sectionHeading.letterSpacing,
-    color: T.colors.accent,
-    marginBottom: 4,
-  },
-});
+function makeStyles(T: TokenSet) {
+  return StyleSheet.create({
+    page: {
+      fontFamily: bodyFont(T),
+      fontSize: T.type.bodySize,
+      lineHeight: T.type.lineHeight,
+      color: T.colors.text,
+      backgroundColor: T.colors.background,
+      paddingTop: T.page.paddingTopPt,
+      paddingBottom: T.page.paddingBottomPt,
+      paddingLeft: T.page.paddingLeftPt,
+      paddingRight: T.page.paddingRightPt,
+    },
+    header: { marginBottom: T.spacing.headerToBodyGap },
+    name: { fontFamily: headingFont(T), fontSize: T.type.nameSize, fontWeight: 700 },
+    headline: {
+      fontFamily: headingFont(T),
+      fontSize: T.type.headlineSize,
+      color: T.colors.accent,
+      marginTop: 2,
+    },
+    contact: { fontSize: T.type.smallSize, color: T.colors.muted, marginTop: 6 },
+    summary: { fontSize: T.type.bodySize, marginTop: 8 },
+    section: { marginTop: T.spacing.sectionGap },
+    sectionHeading: {
+      fontFamily: headingFont(T),
+      fontSize: T.type.sectionHeadingSize,
+      fontWeight: 700,
+      textTransform: 'uppercase',
+      letterSpacing: T.sectionHeading.letterSpacing,
+      color: T.colors.accent,
+      marginBottom: 4,
+    },
+  });
+}
 
 export function TechnicalPdfDocument({ resume }: { resume: Resume }) {
+  const T = applyTheme(technicalTokens, resume.meta.theme);
+  const styles = makeStyles(T);
   const size = resume.meta.pageSize === 'letter' ? 'LETTER' : 'A4';
   const { basics, sections } = resume;
   const contact = [

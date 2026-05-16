@@ -2,13 +2,15 @@ import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsHtml } from '../_shared/sections-html';
 import { bodyFont } from '../_shared/types';
-import { modernTokens as T } from './tokens';
+import { applyTheme } from '../_shared/themed-tokens';
+import { modernTokens } from './tokens';
 
 /**
  * Modern — Sans-serif with vivid accent stripe down the left margin and
  * accent-colored section headings with inline bar marker.
  */
 export function ModernHtmlTemplate({ resume }: { resume: Resume }) {
+  const T = applyTheme(modernTokens, resume.meta.theme);
   const { basics, sections } = resume;
   const contact = [
     basics.email,

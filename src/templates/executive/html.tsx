@@ -2,10 +2,12 @@ import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsHtml } from '../_shared/sections-html';
 import { bodyFont } from '../_shared/types';
-import { executiveTokens as T } from './tokens';
+import { applyTheme } from '../_shared/themed-tokens';
+import { executiveTokens } from './tokens';
 
 /** Executive — centered hero, serif body, conservative rules. */
 export function ExecutiveHtmlTemplate({ resume }: { resume: Resume }) {
+  const T = applyTheme(executiveTokens, resume.meta.theme);
   const { basics, sections } = resume;
   const contact = [
     basics.email,

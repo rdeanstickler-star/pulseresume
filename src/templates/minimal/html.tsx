@@ -2,10 +2,12 @@ import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsHtml } from '../_shared/sections-html';
 import { bodyFont } from '../_shared/types';
-import { minimalTokens as T } from './tokens';
+import { applyTheme } from '../_shared/themed-tokens';
+import { minimalTokens } from './tokens';
 
 /** Minimal — quiet, whitespace-rich, no decorative rules. */
 export function MinimalHtmlTemplate({ resume }: { resume: Resume }) {
+  const T = applyTheme(minimalTokens, resume.meta.theme);
   const { basics, sections } = resume;
   const contact = [
     basics.email,

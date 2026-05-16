@@ -14,6 +14,7 @@ import { BasicsForm } from '@/components/editor/BasicsForm';
 import { SectionList } from '@/components/editor/SectionList';
 import { ExportButton } from '@/components/editor/ExportButton';
 import { TemplatePicker } from '@/components/editor/TemplatePicker';
+import { CustomizationPanel } from '@/components/editor/CustomizationPanel';
 import { TemplateRenderer } from '@/components/preview/TemplateRenderer';
 import { SEEDS } from '@/schema/seeds';
 import { cn } from '@/lib/utils';
@@ -69,6 +70,8 @@ export function EditorShell() {
             <BasicsForm />
             <Separator />
             <SectionList />
+            <Separator />
+            <CustomizationPanel />
           </div>
         </section>
 

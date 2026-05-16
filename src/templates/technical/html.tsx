@@ -2,10 +2,12 @@ import type { Resume } from '@/schema/resume';
 import { defaultSectionName } from '@/store/resume-store';
 import { SectionItemsHtml } from '../_shared/sections-html';
 import { bodyFont, headingFont } from '../_shared/types';
-import { technicalTokens as T } from './tokens';
+import { applyTheme } from '../_shared/themed-tokens';
+import { technicalTokens } from './tokens';
 
 /** Technical — monospace headings, compact density, `[ SECTION ]` markers. */
 export function TechnicalHtmlTemplate({ resume }: { resume: Resume }) {
+  const T = applyTheme(technicalTokens, resume.meta.theme);
   const { basics, sections } = resume;
   const contact = [
     basics.email,

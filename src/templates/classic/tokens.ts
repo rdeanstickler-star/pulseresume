@@ -1,41 +1,37 @@
+import type { TokenSet } from '../_shared/types';
+
 /**
  * Classic template style tokens.
  *
- * These are the SINGLE SOURCE OF TRUTH for visual values shared between the
- * HTML preview (`html.tsx`) and the PDF export (`pdf.tsx`). Both renderers
- * import from this file. Changes here ripple to both paths automatically,
- * keeping HTML/PDF parity by construction rather than discipline.
- *
- * Values are in absolute units (pt for PDF, px for HTML at the standard
- * 1pt = 1.333px ratio on most screens). The tokens are intentionally small
- * — Classic is a conservative, ATS-friendly serif/sans template.
+ * Conforms to the shared `TokenSet` contract so the customization layer
+ * (M6) can merge `meta.theme` overrides on top via `applyTheme`. The HTML
+ * helper `classicHtmlStyle` is kept for backwards compatibility with the
+ * existing classic/html.tsx file — it reads from the static `classicTokens`
+ * before any theme override.
  */
-
-export const classicTokens = {
-  /** Page-level padding (used as @react-pdf Page padding and HTML article p-X). */
+export const classicTokens: TokenSet = {
   page: {
     paddingTopPt: 36,
     paddingBottomPt: 36,
     paddingLeftPt: 40,
     paddingRightPt: 40,
   },
-
-  /** Color palette. Sober, high-contrast for ATS scanners and printers. */
   colors: {
     text: '#0f172a',
     muted: '#475569',
     rule: '#cbd5e1',
     accent: '#0f172a',
+    onAccent: '#ffffff',
     background: '#ffffff',
+    surface: '#f8fafc',
   },
-
-  /** Font families. Must match the strings used in pdf-fonts.ts Font.register(). */
   fonts: {
     sans: 'Inter',
     serif: 'Merriweather',
+    mono: 'JetBrains Mono',
+    body: 'sans',
+    heading: 'sans',
   },
-
-  /** Type scale, in points. Used directly by PDF; HTML divides by 0.75 to get px. */
   type: {
     nameSize: 22,
     headlineSize: 11,
@@ -44,8 +40,6 @@ export const classicTokens = {
     smallSize: 8.5,
     lineHeight: 1.4,
   },
-
-  /** Vertical rhythm. */
   spacing: {
     sectionGap: 14,
     itemGap: 8,
@@ -53,21 +47,25 @@ export const classicTokens = {
     afterHeaderRule: 4,
     bulletIndent: 12,
   },
-
-  /** Section heading style — uppercase, letter-spaced, ruled underline. */
   sectionHeading: {
     uppercase: true,
     letterSpacing: 1.2,
     weight: 700,
+    rule: 'border-bottom',
   },
-} as const;
+};
 
 /** Convenience: convert a point value to a px-equivalent for HTML rendering. */
 export function ptToPx(pt: number): number {
   return Math.round(pt * (4 / 3));
 }
 
-/** Tailwind-style inline style helpers for the HTML renderer. */
+/**
+ * Pre-computed inline-style helpers for the Classic HTML renderer. These
+ * derive from `classicTokens` and are NOT theme-aware. The Classic html.tsx
+ * file uses these directly today; in a follow-up we'll inline them with
+ * applyTheme so Classic also responds to meta.theme overrides.
+ */
 export const classicHtmlStyle = {
   page: {
     color: classicTokens.colors.text,
