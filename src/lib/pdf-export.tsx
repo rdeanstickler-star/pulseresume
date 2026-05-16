@@ -2,23 +2,31 @@ import type { ReactElement } from 'react';
 import { pdf, type DocumentProps } from '@react-pdf/renderer';
 import type { Resume } from '@/schema/resume';
 import { ClassicPdfDocument } from '@/templates/classic/pdf';
+import { ModernPdfDocument } from '@/templates/modern/pdf';
+import { MinimalPdfDocument } from '@/templates/minimal/pdf';
+import { CreativePdfDocument } from '@/templates/creative/pdf';
+import { ExecutivePdfDocument } from '@/templates/executive/pdf';
+import { TechnicalPdfDocument } from '@/templates/technical/pdf';
 
 /**
- * Resolve a template + resume to the matching React-PDF document. Currently
- * only Classic exists; M5 adds Modern / Minimal / Creative / Executive /
- * Technical, each as its own `<TemplatePdfDocument>` component.
+ * Resolve a template + resume to the matching React-PDF document. All six
+ * template families ship as of M5; the default arm catches forward-compat
+ * future values and falls back to Classic.
  */
 function buildDocument(resume: Resume): ReactElement<DocumentProps> {
   switch (resume.meta.template) {
-    case 'classic':
     case 'modern':
+      return <ModernPdfDocument resume={resume} />;
     case 'minimal':
+      return <MinimalPdfDocument resume={resume} />;
     case 'creative':
+      return <CreativePdfDocument resume={resume} />;
     case 'executive':
+      return <ExecutivePdfDocument resume={resume} />;
     case 'technical':
-      // Until M5 ships the other five, every template falls back to Classic
-      // so export always produces something. Once each template gains its
-      // own PDF document, swap this in.
+      return <TechnicalPdfDocument resume={resume} />;
+    case 'classic':
+    default:
       return <ClassicPdfDocument resume={resume} />;
   }
 }

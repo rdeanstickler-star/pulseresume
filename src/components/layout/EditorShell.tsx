@@ -13,6 +13,7 @@ import {
 import { BasicsForm } from '@/components/editor/BasicsForm';
 import { SectionList } from '@/components/editor/SectionList';
 import { ExportButton } from '@/components/editor/ExportButton';
+import { TemplatePicker } from '@/components/editor/TemplatePicker';
 import { TemplateRenderer } from '@/components/preview/TemplateRenderer';
 import { SEEDS } from '@/schema/seeds';
 import { cn } from '@/lib/utils';
@@ -122,6 +123,7 @@ function Toolbar({
       </div>
 
       <div className="hidden items-center gap-2 md:flex">
+        <TemplatePicker />
         <ExportButton />
       </div>
 

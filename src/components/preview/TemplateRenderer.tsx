@@ -1,24 +1,31 @@
 import { useResumeStore } from '@/store/resume-store';
 import { ClassicHtmlTemplate } from '@/templates/classic';
+import { ModernHtmlTemplate } from '@/templates/modern';
+import { MinimalHtmlTemplate } from '@/templates/minimal';
+import { CreativeHtmlTemplate } from '@/templates/creative';
+import { ExecutiveHtmlTemplate } from '@/templates/executive';
+import { TechnicalHtmlTemplate } from '@/templates/technical';
 
 /**
- * Dispatches the right template HTML renderer based on `resume.meta.template`.
- *
- * Currently only Classic exists; M5's five templates each export their own
- * `<XHtmlTemplate>` and slot in here. Until then, every template value
- * falls back to Classic so the editor never shows a blank pane.
+ * Preview-pane dispatcher. Reads the current template from the store's
+ * meta.template and renders the corresponding HTML template component.
+ * All six templates ship as of M5.
  */
 export function TemplateRenderer() {
   const resume = useResumeStore((s) => s.resume);
-
   switch (resume.meta.template) {
-    case 'classic':
     case 'modern':
+      return <ModernHtmlTemplate resume={resume} />;
     case 'minimal':
+      return <MinimalHtmlTemplate resume={resume} />;
     case 'creative':
+      return <CreativeHtmlTemplate resume={resume} />;
     case 'executive':
+      return <ExecutiveHtmlTemplate resume={resume} />;
     case 'technical':
-      // M5 swaps each of these to its own component.
+      return <TechnicalHtmlTemplate resume={resume} />;
+    case 'classic':
+    default:
       return <ClassicHtmlTemplate resume={resume} />;
   }
 }
