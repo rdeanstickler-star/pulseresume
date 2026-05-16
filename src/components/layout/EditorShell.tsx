@@ -12,7 +12,8 @@ import {
 } from '@/components/ui/select';
 import { BasicsForm } from '@/components/editor/BasicsForm';
 import { SectionList } from '@/components/editor/SectionList';
-import { TemplatePlaceholder } from '@/components/preview/TemplatePlaceholder';
+import { ExportButton } from '@/components/editor/ExportButton';
+import { TemplateRenderer } from '@/components/preview/TemplateRenderer';
 import { SEEDS } from '@/schema/seeds';
 import { cn } from '@/lib/utils';
 
@@ -75,7 +76,7 @@ export function EditorShell() {
           className={cn('overflow-y-auto bg-muted/30', view === 'edit' && 'hidden md:block')}
         >
           <div className="p-4 md:p-6">
-            <TemplatePlaceholder />
+            <TemplateRenderer />
           </div>
         </section>
       </div>
@@ -118,6 +119,10 @@ function Toolbar({
           <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
           Reset
         </Button>
+      </div>
+
+      <div className="hidden items-center gap-2 md:flex">
+        <ExportButton />
       </div>
 
       <div
