@@ -1,0 +1,2 @@
+# Templates land here in M4 (Classic) and M5 (Modern, Minimal, Creative, Executive, Technical).
+# Each template: tokens.ts + sections/*.tsx + html.tsx (preview) + pdf.tsx (export).
