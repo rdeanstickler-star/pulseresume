@@ -16,7 +16,9 @@
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
     --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    /* Darkened from 215 16% 47% → 215 19% 38% so 12px small text passes WCAG AA
+       (4.5:1) on the bg-muted/50 background used by status pills. */
+    --muted-foreground: 215 19% 38%;
     --accent: 188 96% 53%;
     --accent-foreground: 222 47% 11%;
     --destructive: 0 84% 60%;
