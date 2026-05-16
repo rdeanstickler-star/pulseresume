@@ -7,6 +7,8 @@ dist/
 dist-ssr/
 build/
 *.local
+.tsbuild-node/
+*.tsbuildinfo
 
 # Coverage & test artifacts
 coverage/
