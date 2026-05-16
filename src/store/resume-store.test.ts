@@ -123,6 +123,69 @@ describe('resume store', () => {
     });
   });
 
+  describe('moveItem', () => {
+    it('reorders items within a section', () => {
+      useResumeStore.getState().setResume(developerSeed);
+      // Pick the experience section from the seed (id seeded as 00000000-...-000000000002)
+      const expSection = useResumeStore
+        .getState()
+        .resume.sections.find((s) => s.type === 'experience');
+      expect(expSection).toBeDefined();
+      if (!expSection || expSection.items.length < 2) return;
+      const firstItemId = expSection.items[0]!.id;
+      const secondItemId = expSection.items[1]!.id;
+      useResumeStore.getState().moveItem(expSection.id, firstItemId, 1);
+      const after = useResumeStore.getState().resume.sections.find((s) => s.id === expSection.id);
+      expect(after?.items[0]?.id).toBe(secondItemId);
+      expect(after?.items[1]?.id).toBe(firstItemId);
+    });
+
+    it('clamps the target index to valid range', () => {
+      useResumeStore.getState().setResume(developerSeed);
+      const expSection = useResumeStore
+        .getState()
+        .resume.sections.find((s) => s.type === 'experience');
+      if (!expSection || expSection.items.length < 2) return;
+      const firstItemId = expSection.items[0]!.id;
+      useResumeStore.getState().moveItem(expSection.id, firstItemId, 999);
+      const after = useResumeStore.getState().resume.sections.find((s) => s.id === expSection.id);
+      expect(after?.items.at(-1)?.id).toBe(firstItemId);
+    });
+
+    it('is a no-op when the section id is unknown', () => {
+      useResumeStore.getState().setResume(developerSeed);
+      const before = useResumeStore.getState().resume.sections.map((s) => s.id);
+      useResumeStore.getState().moveItem('nonexistent-section', 'whatever', 0);
+      const after = useResumeStore.getState().resume.sections.map((s) => s.id);
+      expect(after).toEqual(before);
+    });
+
+    it('is a no-op when the item id is unknown', () => {
+      useResumeStore.getState().setResume(developerSeed);
+      const expSection = useResumeStore
+        .getState()
+        .resume.sections.find((s) => s.type === 'experience');
+      if (!expSection) return;
+      const beforeOrder = expSection.items.map((i) => i.id);
+      useResumeStore.getState().moveItem(expSection.id, 'nonexistent-item', 0);
+      const after = useResumeStore.getState().resume.sections.find((s) => s.id === expSection.id);
+      expect(after?.items.map((i) => i.id)).toEqual(beforeOrder);
+    });
+
+    it('is a no-op when fromIndex === toIndex', () => {
+      useResumeStore.getState().setResume(developerSeed);
+      const expSection = useResumeStore
+        .getState()
+        .resume.sections.find((s) => s.type === 'experience');
+      if (!expSection || expSection.items.length === 0) return;
+      const firstItemId = expSection.items[0]!.id;
+      const before = expSection.items.map((i) => i.id);
+      useResumeStore.getState().moveItem(expSection.id, firstItemId, 0);
+      const after = useResumeStore.getState().resume.sections.find((s) => s.id === expSection.id);
+      expect(after?.items.map((i) => i.id)).toEqual(before);
+    });
+  });
+
   it('reset returns to an empty resume', () => {
     useResumeStore.getState().setBasics({ name: 'About to reset' });
     useResumeStore.getState().addSection('experience');

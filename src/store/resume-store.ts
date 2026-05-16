@@ -170,6 +170,8 @@ interface ResumeStore {
   moveSection(id: string, toIndex: number): void;
   /** Patch a single section's top-level fields (name, visible, columns). */
   updateSection(id: string, patch: Partial<Pick<Section, 'name' | 'visible' | 'columns'>>): void;
+  /** Move an item within a section to a new index. No-op if either id is missing. */
+  moveItem(sectionId: string, itemId: string, toIndex: number): void;
   /** Reset to a blank resume. */
   reset(): void;
 }
@@ -253,6 +255,27 @@ export const useResumeStore = create<ResumeStore>()(
           },
           set,
         );
+      },
+
+      moveItem(sectionId, itemId, toIndex) {
+        const r = get().resume;
+        const sectionIndex = r.sections.findIndex((s) => s.id === sectionId);
+        if (sectionIndex === -1) return;
+        const section = r.sections[sectionIndex]!;
+        const fromIndex = section.items.findIndex((i) => i.id === itemId);
+        if (fromIndex === -1) return;
+        const target = Math.max(0, Math.min(toIndex, section.items.length - 1));
+        if (target === fromIndex) return;
+        // Reorder within the section's items array. The cast is safe because
+        // we're keeping all items of the same type — discriminated union preserved.
+        const items = [...section.items];
+        const [moved] = items.splice(fromIndex, 1);
+        if (!moved) return;
+        items.splice(target, 0, moved);
+        const nextSection = { ...section, items } as Section;
+        const nextSections = [...r.sections];
+        nextSections[sectionIndex] = nextSection;
+        commit({ ...r, sections: nextSections }, set);
       },
 
       reset() {
