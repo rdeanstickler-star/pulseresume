@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router';
 import { FileText, Github } from 'lucide-react';
+import { GITHUB_REPO_URL } from '@/config';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from './ThemeProvider';
 import { ThemeToggle } from './ThemeToggle';
@@ -42,15 +43,17 @@ export function AppLayout() {
                 Editor
               </Link>
               <ThemeToggle />
-              <a
-                href="https://github.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                aria-label="View source on GitHub (opens in new tab)"
-              >
-                <Github className="h-4 w-4" aria-hidden="true" />
-              </a>
+              {GITHUB_REPO_URL && (
+                <a
+                  href={GITHUB_REPO_URL}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label="View source on GitHub (opens in new tab)"
+                >
+                  <Github className="h-4 w-4" aria-hidden="true" />
+                </a>
+              )}
             </nav>
           </div>
         </header>

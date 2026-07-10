@@ -4,6 +4,13 @@ All notable changes to PulseResume are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-07-10
+
+### Fixed
+
+- "View on GitHub" links (header icon + home hero) pointed at bare `https://github.com/`. Both now render only when `GITHUB_REPO_URL` in `src/config.ts` is set — set it once the repository is published.
+- Added `public/_redirects` (`/* /index.html 200`) so Netlify deploys serve deep links like `/editor` on hard load; previously the SPA fallback existed only in the deployed bundle, not in source, so fresh builds would have regressed it.
+
 ## [1.0.0] — 2026-05-16
 
 Initial public release. PulseResume is a privacy-first, MIT-licensed, open-source resume builder modeled on [rxresu.me](https://rxresu.me) and [Reactive Resume v5](https://github.com/AmruthPillai/Reactive-Resume) — built as an independent reimplementation from scratch on Vite + React 19 + TypeScript strict.

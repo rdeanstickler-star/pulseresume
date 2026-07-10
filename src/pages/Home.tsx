@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { ArrowRight, Eye, FileDown, ShieldCheck } from 'lucide-react';
+import { GITHUB_REPO_URL } from '@/config';
 
 export function HomePage() {
   return (
@@ -10,11 +11,12 @@ export function HomePage() {
           Privacy-first · No accounts · MIT licensed
         </p>
         <h1 className="text-balance text-4xl font-bold tracking-tight md:text-6xl">
-          Build a beautiful resume <span className="text-primary">that never leaves your browser.</span>
+          Build a beautiful resume{' '}
+          <span className="text-primary">that never leaves your browser.</span>
         </h1>
         <p className="mt-6 text-pretty text-lg text-muted-foreground md:text-xl">
-          Real-time editor. Six templates. PDF export. No telemetry, no accounts, no server.
-          Your data stays in your localStorage, where it belongs.
+          Real-time editor. Six templates. PDF export. No telemetry, no accounts, no server. Your
+          data stays in your localStorage, where it belongs.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link
@@ -24,14 +26,16 @@ export function HomePage() {
             Start building
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
-          <a
-            href="https://github.com/"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex h-11 items-center justify-center rounded-md border border-input bg-background px-6 text-sm font-medium shadow-sm transition-colors hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            View on GitHub
-          </a>
+          {GITHUB_REPO_URL && (
+            <a
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-input bg-background px-6 text-sm font-medium shadow-sm transition-colors hover:bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              View on GitHub
+            </a>
+          )}
         </div>
       </section>
 
